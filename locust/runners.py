@@ -81,6 +81,9 @@ class LocustRunner(object):
             # create locusts depending on weight
             percent = locust.weight / float(weight_sum)
             num_locusts = int(round(amount * percent))
+
+            logger.debug("start locust count: %i, weight_sum: %i, percent: %f", num_locusts, weight_sum, percent)
+
             bucket.extend([locust for x in xrange(0, num_locusts)])
         return bucket
 
@@ -111,6 +114,7 @@ class LocustRunner(object):
                 occurrence_count[locust.__name__] += 1
                 def start_locust(_):
                     try:
+                        logger.debug("locust start.....run %.5f" % sleep_time)
                         locust().run(runner=self)
                     except GreenletExit:
                         pass
